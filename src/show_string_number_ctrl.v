@@ -30,18 +30,26 @@ module show_string_number_ctrl
     // output      reg             DONE // 用于测试        
 );      
 //****************** Parameter and Internal Signal *******************//  
-parameter   MODE_Square     = 4'd0;   //方形模式
-parameter   MODE_Sin        = 4'd1;   //正弦模式
-parameter   MODE_Triangle   = 4'd2;   //三角形模式
-parameter   MODE_Sawtooth   = 4'd3;   //锯齿波模式
-parameter   MODE_AM         = 4'd4;   //正弦波模式
-parameter   MODE_FM         = 4'd5;   //调频模式
-parameter   MODE_PWM        = 4'd6;   //脉宽调制模式
-parameter   MODE_HOME       = 4'd7;   //home模式
+parameter   MODE_START      = 4'd0;   //起始模式
+parameter   MODE_Sin        = 4'd1;   //方形模式
+parameter   MODE_Square     = 4'd2;   //正弦模式
+parameter   MODE_Triangle   = 4'd3;   //三角形模式
+parameter   MODE_Sawtooth   = 4'd4;   //锯齿波模式
+parameter   MODE_PWM        = 4'd5;   //正弦波模式
+parameter   MODE_AM         = 4'd6;   //调频模式
+parameter   MODE_ASK        = 4'd7;   //脉宽调制模式
+parameter   MODE_FM         = 4'd8;   //home模式
+parameter   MODE_FSK        = 4'd9;   //频移键控模式
+parameter   MODE_PM         = 4'd10;  //相位调制模式
+parameter   MODE_PSK        = 4'd11;  //相位键控模式
+parameter   MODE_HOME      = 4'd12;  //home模式
+parameter   MODE_DEFAULT    = 4'd13;  //默认模式
+parameter   MODE_NAME       = 4'd14;  //名字模式
 
-parameter   MODE_DEFAULT    = 4'd8;   //默认模式
 
-parameter   MODE_NAME       = 4'd9;
+// parameter   MODE_DEFAULT    = 4'd8;   //默认模式
+
+// parameter   MODE_NAME       = 4'd9;
 
 reg     [1:0]   cnt1;            //展示 行 计数器？！？3行故cnt1值只需0，1，2
 //也可能是延迟计数器，init_done为高电平后，延迟3拍，产生show_char_flag高脉冲
@@ -123,11 +131,23 @@ always@(posedge sys_clk or negedge sys_rst_n )
                 * │'曹'│'原' │'方'│'波'│'正'│'弦'│'三'│'角' │'锯'│'齿'│'胡'│'哲'│'玮'│    │    │    │
                 * └────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
                 */
+            MODE_START   :   //起始模式
+                case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
+                    0 : ascii_num <= 8'd32 - 8'd32;    // 空格
+                    1 : ascii_num <= 8'd68 - 8'd32;    // D
+                    2 : ascii_num <= 8'd68 - 8'd32;    // D
+                    3 : ascii_num <= 8'd83 - 8'd32;    // S
+                    4 : ascii_num <= 8'd32 - 8'd32;    // 空格
+                    default: ascii_num <= 'd0;
+                endcase
+
             MODE_Square   :
                 case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
-                    0 : ascii_num <= 8'd129 - 8'd32;   // 方
-                    1 : ascii_num <= 8'd32  - 8'd32;   // 空格
-                    2 : ascii_num <= 8'd130 - 8'd32;   // 波
+                    0 : ascii_num <= 8'd32  - 8'd32;   // 空格
+                    1 : ascii_num <= 8'd129 - 8'd32;   // 方
+                    2 : ascii_num <= 8'd32  - 8'd32;   // 空格
+                    3 : ascii_num <= 8'd130 - 8'd32;   // 波
+                    4 : ascii_num <= 8'd32  - 8'd32;   // 空格
                     default: ascii_num <= 'd0;
                 endcase
             MODE_Sin      :
@@ -135,7 +155,7 @@ always@(posedge sys_clk or negedge sys_rst_n )
                     0 : ascii_num <= 8'd131 - 8'd32;   // 正
                     1 : ascii_num <= 8'd32  - 8'd32;   // 空格
                     2 : ascii_num <= 8'd132 - 8'd32;   // 弦
-                    3 : ascii_num <= 8'd32 - 8'd32;    // 波
+                    3 : ascii_num <= 8'd32  - 8'd32;   // 波
                     4 : ascii_num <= 8'd130 - 8'd32;   // 波
                     default: ascii_num <= 'd0;
                 endcase
@@ -157,25 +177,25 @@ always@(posedge sys_clk or negedge sys_rst_n )
                     4 : ascii_num <= 8'd130 - 8'd32;   // 波
                     default: ascii_num <= 'd0;
                 endcase
-            MODE_AM      :
+            MODE_AM       :
                 case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
                     0:  ascii_num <= 8'd32 - 8'd32;   // 空格
-                    1 : ascii_num <= 8'd32 - 8'd32;   // A
-                    2 : ascii_num <= 8'd65 - 8'd32;   // A
+                    1 : ascii_num <= 8'd65 - 8'd32;   // A
+                    2 : ascii_num <= 8'd32 - 8'd32;   // 空格
                     3 : ascii_num <= 8'd77 - 8'd32;   // M
                     4:  ascii_num <= 8'd32 - 8'd32;   // 空格
                     default: ascii_num <= 'd0;
                 endcase
-            MODE_FM      :
+            MODE_FM       :
                 case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
                     0:  ascii_num <= 8'd32 - 8'd32;   // 空格
-                    1 : ascii_num <= 8'd32 - 8'd32;   // 
-                    2 : ascii_num <= 8'd70 - 8'd32;   // F
+                    1 : ascii_num <= 8'd70 - 8'd32;   // F
+                    2 : ascii_num <= 8'd32 - 8'd32;   // 空格
                     3 : ascii_num <= 8'd77 - 8'd32;   // M
                     4 : ascii_num <= 8'd32 - 8'd32;   // 空格
                     default: ascii_num <= 'd0;
                 endcase
-            MODE_PWM     :
+            MODE_PWM      :
                 case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
                     0:  ascii_num <= 8'd32 - 8'd32;   // 空格
                     1 : ascii_num <= 8'd80 - 8'd32;   // P
@@ -184,64 +204,101 @@ always@(posedge sys_clk or negedge sys_rst_n )
                     4 : ascii_num <= 8'd32 - 8'd32;   // 空格
                     default: ascii_num <= 'd0;
                 endcase
-
-            MODE_HOME    :
+            MODE_ASK      :
                 case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
-                    0 : ascii_num <= 8'd72 - 8'd32;   // H
-                    1 : ascii_num <= 8'd79 - 8'd32;   // O
-                    2 : ascii_num <= 8'd77 - 8'd32;   // M
-                    3 : ascii_num <= 8'd69 - 8'd32;   // E 
-                    // 换行
-                    4 : ascii_num <= 8'd48 - 8'd32;      // '0'（方波前加数字0）
-                    5 : ascii_num <= 8'd129 - 8'd32;     // 方
-                    6 : ascii_num <= 8'd32  - 8'd32;     // 空格
-                    7 : ascii_num <= 8'd130 - 8'd32;     // 波
-                    8 : ascii_num <= 8'd49 - 8'd32;      // '1'（换行前加数字1）
-                    9 : ascii_num <= 8'd131 - 8'd32;     // 正（第二行，注：无需换行）
-                    10: ascii_num <= 8'd132 - 8'd32;     // 弦
-                    11: ascii_num <= 8'd130 - 8'd32;     // 波
-                    12: ascii_num <= 8'd50 - 8'd32;      // '2'（换行前加数字2）
-                    13: ascii_num <= 8'd133 - 8'd32;     // 三（第三行，注：无需换行）
-                    14: ascii_num <= 8'd134 - 8'd32;     // 角
-                    15: ascii_num <= 8'd130 - 8'd32;     // 波
-                    16: ascii_num <= 8'd51 - 8'd32;      // '3'（换行前加数字3）
-                    17: ascii_num <= 8'd135 - 8'd32;     // 锯（第四行，注：无需换行）
-                    18: ascii_num <= 8'd136 - 8'd32;     // 齿
-                    19: ascii_num <= 8'd130 - 8'd32;     // 波
-                    20: ascii_num <= 8'd52 - 8'd32;      // '4'
-                    21: ascii_num <= 8'd65  - 8'd32;     // A
-                    22: ascii_num <= 8'd77  - 8'd32;     // M
-                    23: ascii_num <= 8'd32 - 8'd32;      // 空格
-                    24: ascii_num <= 8'd53 - 8'd32;      // '5'
-                    25: ascii_num <= 8'd80  - 8'd32;     // P
-                    26: ascii_num <= 8'd77  - 8'd32;     // M
-                    27: ascii_num <= 8'd32 - 8'd32;      // 空格
-                    28: ascii_num <= 8'd54 - 8'd32;      // '6'
-                    29: ascii_num <= 8'd80  - 8'd32;     // P
-                    30: ascii_num <= 8'd87  - 8'd32;     // W
-                    31: ascii_num <= 8'd77  - 8'd32;     // M
-
+                    0:  ascii_num <= 8'd32 - 8'd32;   // 空格
+                    1 : ascii_num <= 8'd65 - 8'd32;   // A
+                    2 : ascii_num <= 8'd83 - 8'd32;   // S
+                    3 : ascii_num <= 8'd75 - 8'd32;   // K
+                    4 : ascii_num <= 8'd32 - 8'd32;   // 空格
                     default: ascii_num <= 'd0;
                 endcase
+            MODE_FSK      :
+                case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
+                    0:  ascii_num <= 8'd32 - 8'd32;   // 空格
+                    1 : ascii_num <= 8'd70 - 8'd32;   // F
+                    2 : ascii_num <= 8'd83 - 8'd32;   // S
+                    3 : ascii_num <= 8'd75 - 8'd32;   // K
+                    4 : ascii_num <= 8'd32 - 8'd32;   // 空格
+                    default: ascii_num <= 'd0;
+                endcase
+            MODE_PM       :
+                case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
+                    0 : ascii_num <= 8'd32 - 8'd32;   // 空格
+                    1 : ascii_num <= 8'd80 - 8'd32;   // P
+                    2 : ascii_num <= 8'd32 - 8'd32;   // 空格
+                    3 : ascii_num <= 8'd77 - 8'd32;   // M
+                    4 : ascii_num <= 8'd32 - 8'd32;   // 空格
+                    default: ascii_num <= 'd0;
+                endcase
+            MODE_PSK      :
+                case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
+                    0 : ascii_num <= 8'd32 - 8'd32;   // 空格
+                    1 : ascii_num <= 8'd80 - 8'd32;   // P
+                    2 : ascii_num <= 8'd83 - 8'd32;   // S
+                    3 : ascii_num <= 8'd75 - 8'd32;   // K
+                    4 : ascii_num <= 8'd32 - 8'd32;   // 空格
+                    default: ascii_num <= 'd0;
+                endcase
+
+
+            // MODE_HOME    :
+            //     case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）
+            //         0 : ascii_num <= 8'd72 - 8'd32;   // H
+            //         1 : ascii_num <= 8'd79 - 8'd32;   // O
+            //         2 : ascii_num <= 8'd77 - 8'd32;   // M
+            //         3 : ascii_num <= 8'd69 - 8'd32;   // E 
+            //         // 换行
+            //         4 : ascii_num <= 8'd48 - 8'd32;      // '0'（方波前加数字0）
+            //         5 : ascii_num <= 8'd129 - 8'd32;     // 方
+            //         6 : ascii_num <= 8'd32  - 8'd32;     // 空格
+            //         7 : ascii_num <= 8'd130 - 8'd32;     // 波
+            //         8 : ascii_num <= 8'd49 - 8'd32;      // '1'（换行前加数字1）
+            //         9 : ascii_num <= 8'd131 - 8'd32;     // 正（第二行，注：无需换行）
+            //         10: ascii_num <= 8'd132 - 8'd32;     // 弦
+            //         11: ascii_num <= 8'd130 - 8'd32;     // 波
+            //         12: ascii_num <= 8'd50 - 8'd32;      // '2'（换行前加数字2）
+            //         13: ascii_num <= 8'd133 - 8'd32;     // 三（第三行，注：无需换行）
+            //         14: ascii_num <= 8'd134 - 8'd32;     // 角
+            //         15: ascii_num <= 8'd130 - 8'd32;     // 波
+            //         16: ascii_num <= 8'd51 - 8'd32;      // '3'（换行前加数字3）
+            //         17: ascii_num <= 8'd135 - 8'd32;     // 锯（第四行，注：无需换行）
+            //         18: ascii_num <= 8'd136 - 8'd32;     // 齿
+            //         19: ascii_num <= 8'd130 - 8'd32;     // 波
+            //         20: ascii_num <= 8'd52 - 8'd32;      // '4'
+            //         21: ascii_num <= 8'd65  - 8'd32;     // A
+            //         22: ascii_num <= 8'd77  - 8'd32;     // M
+            //         23: ascii_num <= 8'd32 - 8'd32;      // 空格
+            //         24: ascii_num <= 8'd53 - 8'd32;      // '5'
+            //         25: ascii_num <= 8'd80  - 8'd32;     // P
+            //         26: ascii_num <= 8'd77  - 8'd32;     // M
+            //         27: ascii_num <= 8'd32 - 8'd32;      // 空格
+            //         28: ascii_num <= 8'd54 - 8'd32;      // '6'
+            //         29: ascii_num <= 8'd80  - 8'd32;     // P
+            //         30: ascii_num <= 8'd87  - 8'd32;     // W
+            //         31: ascii_num <= 8'd77  - 8'd32;     // M
+
+            //         default: ascii_num <= 'd0;
+            //     endcase
 
             MODE_DEFAULT :   //默认模式
                 ascii_num <= 8'd32 - 8'd32;   // 空格
 
-            MODE_NAME    :   //名字模式
-                case(cnt_ascii_num)
-                    0 : ascii_num <= 8'd32 - 8'd32;    // 空格
-                    1 : ascii_num <= 8'd68 - 8'd32;    // D
-                    2 : ascii_num <= 8'd68 - 8'd32;    // D
-                    3 : ascii_num <= 8'd83 - 8'd32;    // S
-                    4 : ascii_num <= 8'd32 - 8'd32;    // 空格
-                    5 : ascii_num <= 8'd137 - 8'd32;   // 胡
-                    6 : ascii_num <= 8'd138 - 8'd32;   // 哲
-                    7 : ascii_num <= 8'd139 - 8'd32;   // 玮
-                    8 : ascii_num <= 8'd38 - 8'd32;    // &
-                    9 : ascii_num <= 8'd127 - 8'd32;   // 曹
-                    10: ascii_num <= 8'd128 - 8'd32;   // 原
-                    default: ascii_num <= 'd0;
-                endcase
+            // MODE_NAME    :   //名字模式
+            //     case(cnt_ascii_num)
+            //         0 : ascii_num <= 8'd32 - 8'd32;    // 空格
+            //         1 : ascii_num <= 8'd68 - 8'd32;    // D
+            //         2 : ascii_num <= 8'd68 - 8'd32;    // D
+            //         3 : ascii_num <= 8'd83 - 8'd32;    // S
+            //         4 : ascii_num <= 8'd32 - 8'd32;    // 空格
+            //         5 : ascii_num <= 8'd137 - 8'd32;   // 胡
+            //         6 : ascii_num <= 8'd138 - 8'd32;   // 哲
+            //         7 : ascii_num <= 8'd139 - 8'd32;   // 玮
+            //         8 : ascii_num <= 8'd38 - 8'd32;    // &
+            //         9 : ascii_num <= 8'd127 - 8'd32;   // 曹
+            //         10: ascii_num <= 8'd128 - 8'd32;   // 原
+            //         default: ascii_num <= 'd0;
+            //     endcase
 
             default     :
                 case(cnt_ascii_num)         //根据当前展示数目（字符坐标）给出展示内容（ascii码）

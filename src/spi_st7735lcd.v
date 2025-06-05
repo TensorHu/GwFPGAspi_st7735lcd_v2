@@ -18,7 +18,7 @@ module  spi_st7735lcd
     input           xtal_clk      ,
     input           sys_rst_n     ,
     // input[3:0]      mode          ,// 模式
-    input           change_mode   , // 模式切换信号     ,
+    // input           change_mode   , // 模式切换信号     ,
     // input   [3:0]   choice_number , // 选择数字显示的信号
     
     output          lcd_rst       ,
@@ -32,6 +32,8 @@ module  spi_st7735lcd
     output          DONE          // 用于测试
     // output[3:0]     _mode         // 模式寄存器输出
 );
+wire    [3:0]   mode ;
+
 wire    [8:0]   data;   
 wire            en_write;
 wire            wr_done; 
@@ -51,13 +53,32 @@ reg     [3:0]   mode ; // 模式寄存器
 wire    [3:0]   choice_number; // 选择数字显示的信号
 assign  choice_number = 4'd4; // 直接连接外部选择数字显示的信号
 
-assign  _sys_rst_n = sys_rst_n & change_mode ; // 直接连接外部复位信号
 assign  testled = ~init_done;
 assign  lcd_led = 1'b0;  //屏背光常亮
 
 wire sys_clk;
 Gowin_rPLL uPLL( .clkout(sys_clk), .clkin (xtal_clk) ); //以PLL核产生高频提升运行速度
 // assign sys_clk = xtal_clk;     //不用PLL核，直接用板载12MHz主频。仿真时也改用此句，免得引入PLL仿真核。
+
+reg change_mode;
+reg [3:0] mode_d;
+
+assign  _sys_rst_n = sys_rst_n & change_mode ; // 直接连接外部复位信号
+
+always @(posedge sys_clk or negedge sys_rst_n) begin
+    if (!sys_rst_n) begin
+        mode_d <= 4'd0;
+        change_mode <= 1'b1;
+    end else begin
+        mode_d <= mode;
+        // 检测mode信号变化，产生一个下降沿
+        if (mode != mode_d)
+            change_mode <= 1'b0;
+        else
+            change_mode <= 1'b1;
+    end
+end
+
 
 lcd_init    lcd_init_inst
 (
@@ -124,13 +145,13 @@ lcd_write
     .mosi         (lcd_mosi     )
 );
 
-always@( negedge change_mode or negedge sys_rst_n)
-begin
-    if(!sys_rst_n)
-        mode <= 4'd0; // 初始化模式为0
-    else 
-        mode <= mode + 1 ; // 模式自增
-end
+// always@( negedge change_mode or negedge sys_rst_n)
+// begin
+//     if(!sys_rst_n)
+//         mode <= 4'd0; // 初始化模式为0
+//     else 
+//         mode <= mode + 1 ; // 模式自增
+// end
 
 show_string_number_ctrl  show_string_number_inst
 (
@@ -175,5 +196,25 @@ lcd_show_char  lcd_show_char_inst
 * 3. wr_done信号输出高电平正常
 * 4. en_write_show_char信号输出低电平，检查中
 */
+// ...existing code...
+
+reg [31:0] cnt_5s;
+reg [3:0]  mode_reg;
+
+always @(posedge sys_clk or negedge sys_rst_n) begin
+    if (!sys_rst_n) begin
+        cnt_5s <= 32'd0;
+        mode_reg <= 4'd0;
+    end else if (cnt_5s >= 32'd67_499_999) begin // 27MHz时钟，5秒=2.5亿
+        cnt_5s <= 32'd0;
+        mode_reg <= mode_reg + 1'b1;
+    end else begin
+        cnt_5s <= cnt_5s + 1'b1;
+    end
+end
+
+assign mode = mode_reg;
+
+// ...existing code...
 
 endmodule
