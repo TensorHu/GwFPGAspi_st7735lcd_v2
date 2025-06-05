@@ -1,0 +1,12 @@
+编写实现spi-st7735控制写屏模块lcd_write及其他模块。
+精简SPI模式处理，只针对模式0；用了8bit数组缓冲数据，保证了en_write信号异常
+密集时数据不出错（会忽略busy过程中的en_write，但不会发前半段数据1再发后半段数据2）
+
+
+资源占用： 逻辑325LUT，寄存器176个，。
+
+testbench增加了 串行反读化并行操作，方便观察模块仿真输出； 
+
+GwFPGAspi_st7735lcd_chk2_ppm.jpg 为实拍图片，屏幕颜色可能与代码中定义不同。
+按图片连线 TangNano pre1核心板 和 SPI小屏，以高云开发工具将\impl\pnr\SPIlcd_prj.fs烧录到FPGA中，
+正常情况下显示也如实拍图片，以此可检查硬件好坏！

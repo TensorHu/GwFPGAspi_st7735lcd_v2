@@ -1,0 +1,14 @@
+-d D:\CourseMaterials\Hardware\Proj\GwFPGAspi_st7735lcd_v2\impl\gwsynthesis\SPIlcd_prj.vg
+-p GW1NR-9C-QFN88P-6
+-pn GW1NR-LV9QN88PC6/I5
+-cst D:\CourseMaterials\Hardware\Proj\GwFPGAspi_st7735lcd_v2\src\LCDAir_pre1.cst
+-cfg D:\CourseMaterials\Hardware\Proj\GwFPGAspi_st7735lcd_v2\impl\pnr\device.cfg
+-bit
+-tr
+-ph
+-timing
+-cst_error
+-convert_sdp32_36_to_sdp16_18
+-correct_hold 1
+-route_maxfan 23
+-global_freq 50.000

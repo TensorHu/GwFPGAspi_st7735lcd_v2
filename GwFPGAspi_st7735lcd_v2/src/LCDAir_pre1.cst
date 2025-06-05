@@ -1,0 +1,35 @@
+//Copyright (C)2014-2024 Gowin Semiconductor Corporation.
+//All rights reserved. 
+//File Title: Physical Constraints file
+//Tool Version: V1.9.10.03 (64-bit)
+//Part Number: GW1NR-LV9QN88PC6/I5
+//Device: GW1NR-9
+//Device Version: C
+//Created Time: Fri 05 09 09:55:51 2025
+
+
+
+IO_LOC "testled" 16;
+IO_PORT "testled" IO_TYPE=LVCMOS18 PULL_MODE=UP DRIVE=8 BANK_VCCIO=1.8;
+
+
+
+IO_PORT "lcd_led" IO_TYPE=LVCMOS18 PULL_MODE=UP DRIVE=8 BANK_VCCIO=1.8;
+IO_LOC "lcd_cs" 48;
+IO_PORT "lcd_cs" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "lcd_mosi" 77;
+IO_PORT "lcd_mosi" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "lcd_sclk" 76;
+IO_PORT "lcd_sclk" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "lcd_dc" 49;
+IO_PORT "lcd_dc" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "lcd_rst" 47;
+IO_PORT "lcd_rst" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+
+IO_LOC "change_mode" 3;
+IO_PORT "change_mode" IO_TYPE=LVCMOS18 PULL_MODE=UP BANK_VCCIO=1.8;
+IO_LOC "sys_rst_n" 4;
+IO_PORT "sys_rst_n" IO_TYPE=LVCMOS18 PULL_MODE=UP BANK_VCCIO=1.8;
+
+IO_LOC "xtal_clk" 52;
+IO_PORT "xtal_clk" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;

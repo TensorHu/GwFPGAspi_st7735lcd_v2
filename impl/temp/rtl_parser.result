@@ -1,0 +1,70 @@
+[
+ {
+  "InstFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/spi_st7735lcd.v",
+  "InstLine" : 16,
+  "InstName" : "spi_st7735lcd",
+  "ModuleFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/spi_st7735lcd.v",
+  "ModuleLine" : 16,
+  "ModuleName" : "spi_st7735lcd",
+  "SubInsts" : [
+   {
+    "InstFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/spi_st7735lcd.v",
+    "InstLine" : 59,
+    "InstName" : "uPLL",
+    "ModuleFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/gowin_rpll/gowin_rpll.v",
+    "ModuleLine" : 10,
+    "ModuleName" : "Gowin_rPLL"
+   },
+   {
+    "InstFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/spi_st7735lcd.v",
+    "InstLine" : 62,
+    "InstName" : "lcd_init_inst",
+    "ModuleFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/lcd_init.v",
+    "ModuleLine" : 7,
+    "ModuleName" : "lcd_init"
+   },
+   {
+    "InstFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/spi_st7735lcd.v",
+    "InstLine" : 97,
+    "InstName" : "muxcontrol_inst",
+    "ModuleFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/centerctrl.v",
+    "ModuleLine" : 6,
+    "ModuleName" : "muxcontrol"
+   },
+   {
+    "InstFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/spi_st7735lcd.v",
+    "InstLine" : 114,
+    "InstName" : "lcd_write_inst",
+    "ModuleFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/lcd_write.v",
+    "ModuleLine" : 7,
+    "ModuleName" : "lcd_write"
+   },
+   {
+    "InstFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/spi_st7735lcd.v",
+    "InstLine" : 135,
+    "InstName" : "show_string_number_inst",
+    "ModuleFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/show_string_number_ctrl.v",
+    "ModuleLine" : 16,
+    "ModuleName" : "show_string_number_ctrl"
+   },
+   {
+    "InstFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/spi_st7735lcd.v",
+    "InstLine" : 153,
+    "InstName" : "lcd_show_char_inst",
+    "ModuleFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/lcd_show_char.v",
+    "ModuleLine" : 6,
+    "ModuleName" : "lcd_show_char",
+    "SubInsts" : [
+     {
+      "InstFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/lcd_show_char.v",
+      "InstLine" : 192,
+      "InstName" : "your_instance_name",
+      "ModuleFile" : "D:/CourseMaterials/Hardware/Proj/GwFPGAspi_st7735lcd_v2/src/gowin_prom/ascii_prom.v",
+      "ModuleLine" : 10,
+      "ModuleName" : "ascii_pROM"
+     }
+    ]
+   }
+  ]
+ }
+]
